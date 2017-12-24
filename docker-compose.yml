@@ -1,0 +1,9 @@
+version: '2'
+services:
+  unbound:
+    build: ./unbound
+    ports:
+    - "53:53/udp"
+  kea:
+    build: ./kea
+    network_mode: "host"
