@@ -2,8 +2,9 @@
   "Dhcp4": {
     "interfaces-config": {
       "interfaces": [
-        "*"
-      ]
+        "br0"
+      ],
+      "dhcp-socket-type": "raw"
     },
     "lease-database": {
       "type": "memfile",
@@ -16,6 +17,16 @@
         "pools": [
           {
             "pool": "10.0.0.129 - 10.0.0.254"
+          }
+        ],
+        "option-data": [
+          {
+            "name": "routers",
+            "data": "10.0.0.1"
+          },
+          {
+            "name": "domain-name-servers",
+            "data": "10.0.0.1"
           }
         ]
       }
@@ -30,7 +41,7 @@
             "output": "stdout"
           }
         ],
-        "severity": "WARN"
+        "severity": "INFO"
       }
     ]
   }
