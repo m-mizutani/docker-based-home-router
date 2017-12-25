@@ -6,4 +6,17 @@ services:
     - "53:53/udp"
   kea:
     build: ./kea
-    network_mode: "host"
+    network_mode: host
+    env_file:
+    - ./mysql.env
+  kea-db:
+    image: mysql
+    restart: always    
+    ports:
+    - 3306:3306
+    env_file:
+    - ./mysql.env
+    volumes:
+    - kea-db-vol:/var/lib/mysql
+volumes:
+  kea-db-vol:
