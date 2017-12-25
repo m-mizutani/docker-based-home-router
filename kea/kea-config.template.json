@@ -2,13 +2,16 @@
   "Dhcp4": {
     "interfaces-config": {
       "interfaces": [
-        "br0"
+        "lo"
       ],
       "dhcp-socket-type": "raw"
     },
     "lease-database": {
-      "type": "memfile",
-      "name": "leases4"
+      "type": "mysql",
+			"name": "dhcpdb",
+			"host": "127.0.0.1",
+			"user": "root",
+			"password": "__MYSQL_ROOT_PASSWORD__"
     },
     "valid-lifetime": 4000,
     "subnet4": [
