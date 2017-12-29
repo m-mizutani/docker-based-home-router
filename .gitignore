@@ -1,5 +1,5 @@
 mysql.env
 config.json
-secrets.json
+secret.json
 fluentd/fluent.conf
 kea/kea-config.json
