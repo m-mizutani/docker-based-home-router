@@ -2,6 +2,7 @@ version: '2'
 services:
   unbound:
     build: ./unbound
+    restart: always    
     ports:
     - "53:53/udp"
     depends_on:
@@ -12,6 +13,7 @@ services:
         fluentd-address: localhost:24224
   kea:
     build: ./kea
+    restart: always    
     network_mode: host
     env_file:
     - ./mysql.env
@@ -38,8 +40,10 @@ services:
         fluentd-address: localhost:24224
   fluentd:
     build: ./fluentd
+    restart: always
     ports:
-    - "24224:24224"
+    - 24224:24224
+    - 5514:5514/udp
     volumes:
     - fluentd-buffer:/var/log/fluentd
 volumes:
