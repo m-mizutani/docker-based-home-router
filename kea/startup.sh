@@ -1,15 +1,16 @@
 #!/bin/bash
 
-cat <<EOF > $HOME/.my.cnf
+cat << EOF > $HOME/.my.cnf
 [client]
 password="$MYSQL_ROOT_PASSWORD"
 EOF
 
-sleep 3
-if [ -z "`mysqlshow -u root -h 127.0.0.1 | grep dhcpdb`" ] ; then
-		mysql -u root -h 127.0.0.1 -e "CREATE DATABASE dhcpdb;"
-		mysql -u root -h 127.0.0.1 -e "SOURCE /usr/share/kea-admin/scripts/mysql/dhcpdb_create.mysql;" dhcpdb
-fi
+NEXT_WAIT_TIME=0
+until mysqladmin ping -u root -h 127.0.0.1 || [ $NEXT_WAIT_TIME -eq 10 ]; do
+		echo "waiting..."
+		sleep $(( NEXT_WAIT_TIME++ ))
+done
+
 
 sed -i -e "s@__MYSQL_ROOT_PASSWORD__@$MYSQL_ROOT_PASSWORD@g" /etc/kea/kea-config.json
 exec kea-dhcp4 -c /etc/kea/kea-config.json

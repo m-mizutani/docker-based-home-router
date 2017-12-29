@@ -10,7 +10,7 @@ services:
     env_file:
     - ./mysql.env
   kea-db:
-    image: mysql
+    build: ./kea-db
     restart: always    
     ports:
     - 3306:3306
@@ -20,3 +20,4 @@ services:
     - kea-db-vol:/var/lib/mysql
 volumes:
   kea-db-vol:
+  fluentd-buffer:
