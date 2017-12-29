@@ -61,19 +61,30 @@ def create_fluentd_config(config):
         ofd.write(line)
 
     template = '''
-<match system.**>
-  @type s3
-  aws_key_id {0}
-  aws_sec_key {1}
-  s3_region {2}
-  s3_bucket {3}
-  s3_object_key_format %{{path}}%{{time_slice}}_%{{index}}.%{{file_extension}}
+<match **>
+  @type forest
+  subtype s3
+  <template>
+    aws_key_id {0}
+    aws_sec_key {1}
+    s3_region {2}
+    s3_bucket {3}
+    s3_object_key_format %{{path}}/%Y/%m/%d/%{{time_slice}}_%{{index}}.%{{file_extension}}
+    time_slice_format %Y%m%d%H
+  </template>
 
-  path system/
-  buffer_path /var/log/fluentd/buffer_system
-  time_slice_format %Y%m%d%H
-  time_slice_wait 10m
-  buffer_chunk_limit 256m
+  <case system.**>
+    path system
+    buffer_path /var/log/fluentd/buffer_system
+    time_slice_wait 30m
+    buffer_chunk_limit 256m
+  </case>
+  <case docker.**>
+    path docker
+    buffer_path /var/log/fluentd/buffer_docker
+    time_slice_wait 10m
+    buffer_chunk_limit 256m
+  </case>
 </match>
 '''
     ofd.write(template.format(
