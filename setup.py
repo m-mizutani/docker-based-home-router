@@ -60,8 +60,29 @@ def create_fluentd_config(config):
     for line in open(IN_FILE, 'rt'):
         ofd.write(line)
 
-    template = '''
-<match system.**>
+    s3_configs = [
+        {
+            'tag': 'system.**',
+            'path': 'system',
+            'time_slice_wait': '30m',
+            'buffer_path': '/var/log/fluentd/buffer_system'
+        },
+        {
+            'tag': 'docker.**',
+            'path': 'docker',
+            'time_slice_wait': '30m',
+            'buffer_path': '/var/log/fluentd/buffer_docker'
+        },
+        {
+            'tag': 'dns-gazer.**',
+            'path': 'dns',
+            'time_slice_wait': '10m',
+            'buffer_path': '/var/log/fluentd/buffer_dns'
+        },
+    ]
+    
+    s3_template = '''
+<match {4}>
   @type s3
   aws_key_id {0}
   aws_sec_key {1}
@@ -70,33 +91,24 @@ def create_fluentd_config(config):
   s3_object_key_format %{{path}}/%Y/%m/%d/%{{time_slice}}_%{{index}}.%{{file_extension}}
   time_slice_format %Y%m%d%H
 
-  path system
-  buffer_path /var/log/fluentd/buffer_system
-  time_slice_wait 30m
-  buffer_chunk_limit 256m
-</match>
-
-<match docker.**>
-  @type s3
-  aws_key_id {0}
-  aws_sec_key {1}
-  s3_region {2}
-  s3_bucket {3}
-  s3_object_key_format %{{path}}/%Y/%m/%d/%{{time_slice}}_%{{index}}.%{{file_extension}}
-  time_slice_format %Y%m%d%H
-
-  path docker
-  buffer_path /var/log/fluentd/buffer_docker
-  time_slice_wait 10m
+  path {5}
+  buffer_path {6}
+  time_slice_wait {7}
   buffer_chunk_limit 256m
 </match>
 '''
-    ofd.write(template.format(
-        config['s3']['key'],
-        config['s3']['secret'],
-        config['s3']['region'],
-        config['s3']['bucket_name']
-    ))
+
+    for c in s3_configs:
+        ofd.write(s3_template.format(
+            config['s3']['key'],
+            config['s3']['secret'],
+            config['s3']['region'],
+            config['s3']['bucket_name'],
+            c['tag'],
+            c['path'],
+            c['buffer_path'],
+            c['time_slice_wait'],
+        ))
 
               
 def create_mysql_env(config):
@@ -106,7 +118,16 @@ def create_mysql_env(config):
     with open(OUT_FILE, 'wt') as ofd:
         ofd.write('MYSQL_DATABASE=dhcpdb\n')
         ofd.write('MYSQL_ROOT_PASSWORD={}\n'.format(config['kea-db']['passwd']))
-    
+
+
+def create_dns_gazer_env(config):
+    OUT_FILE = os.path.join(BASE_DIR, 'dns-gazer.env')
+    logger.info('creating env file for dns-gazer: %s', OUT_FILE)
+
+    with open(OUT_FILE, 'wt') as ofd:
+        ofd.write('DEVICE={}\n'.format(config['monitor']['interface']))
+        ofd.write('FLUENTD_ADDRESS=127.0.0.1:24224\n')
+        
 
 def mkpasswd(n=16):
     passwd_chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
@@ -136,6 +157,8 @@ def main():
     create_fluentd_config(config)
     create_kea_config(config)
     create_mysql_env(config)
+    create_dns_gazer_env(config)
+
 
 if __name__ == '__main__':
     main()

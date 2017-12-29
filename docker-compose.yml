@@ -46,6 +46,14 @@ services:
     - 127.0.0.1:5514:5514/udp
     volumes:
     - fluentd-buffer:/var/log/fluentd
+  dns-gazer:
+    image: mztn/dns-gazer
+    restart: always
+    network_mode: host
+    depends_on:
+    - fluentd
+    env_file:
+    - dns-gazer.env    
 volumes:
   kea-db-vol:
   fluentd-buffer:

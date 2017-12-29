@@ -1,4 +1,5 @@
 mysql.env
+dns-gazer.env
 config.json
 secret.json
 fluentd/fluent.conf
