@@ -18,6 +18,10 @@ services:
     - ./mysql.env
     volumes:
     - kea-db-vol:/var/lib/mysql
+  fluentd:
+    build: ./fluentd
+    volumes:
+    - fluentd-buffer:/var/log/fluentd
 volumes:
   kea-db-vol:
   fluentd-buffer:
