@@ -7,10 +7,6 @@ services:
     - "53:53/udp"
     depends_on:
     - fluentd
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: localhost:24224
   kea:
     build: ./kea
     restart: always    
@@ -19,10 +15,6 @@ services:
     - ./mysql.env
     depends_on:
     - fluentd
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: localhost:24224
   kea-db:
     build: ./kea-db
     restart: always    
@@ -34,10 +26,6 @@ services:
     - kea-db-vol:/var/lib/mysql
     depends_on:
     - fluentd
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: localhost:24224
   fluentd:
     build: ./fluentd
     restart: always
