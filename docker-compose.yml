@@ -27,7 +27,7 @@ services:
     build: ./kea-db
     restart: always    
     ports:
-    - 3306:3306
+    - 127.0.0.1:3306:3306
     env_file:
     - ./mysql.env
     volumes:
@@ -42,8 +42,8 @@ services:
     build: ./fluentd
     restart: always
     ports:
-    - 24224:24224
-    - 5514:5514/udp
+    - 127.0.0.1:24224:24224
+    - 127.0.0.1:5514:5514/udp
     volumes:
     - fluentd-buffer:/var/log/fluentd
 volumes:
