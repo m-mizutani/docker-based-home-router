@@ -1,0 +1,26 @@
+{
+		"s3": {
+				"key": "AKXXXXXXXXXXXXXXXXXXXXXX",
+				"secret": "Ib346xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+				"region": "ap-northeast-1",
+				"bucket_name": "home-network-test"
+		},
+		"dhcp": {
+				"interfaces": [
+						"lo"
+				],
+				"pools": [
+						"10.0.0.129 - 10.0.0.254"
+				]
+		},
+		"network": {
+				"internal_gateway": "10.0.0.1",
+				"subnet": "10.0.0.0/24"
+		},
+		"monitor": {
+				"interface": "enp0s3"
+		},
+		"mackerel": {
+				"api_key": "2R8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+		}
+}

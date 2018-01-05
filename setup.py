@@ -110,7 +110,32 @@ def create_fluentd_config(config):
             c['time_slice_wait'],
         ))
 
-              
+    # ---------------------------
+    # Mackerel
+        
+    mackerel_template = '''
+<match metrics.**>
+  @type mackerel
+  api_key {0}
+  hostid {1}
+  metrics_name my_metrics.${{out_key}}
+  out_keys val1,va2
+</match>
+'''
+    MACKEREL_ID = '/var/lib/mackerel-agent/id'
+
+    mackerel_api_key = config.get('mackerel', {}).get('api_key')
+    if mackerel_api_key:
+        logger.debug('Found Mackerel API KEY in config')
+    if os.path.exists(MACKEREL_ID):
+        logger.debug('Found Mackerel ID file: {}'.format(MACKEREL_ID))
+
+    if mackerel_api_key and os.path.exists(MACKEREL_ID):
+        ofd.write(mackerel_template.format(
+            mackerel_api_key, open(MACKEREL_ID, 'rt').read()
+        ))
+
+        
 def create_mysql_env(config):
     OUT_FILE = os.path.join(BASE_DIR, 'mysql.env')
     logger.info('creating env file for mysql: %s', OUT_FILE)
