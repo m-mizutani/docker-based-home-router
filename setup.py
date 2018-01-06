@@ -154,8 +154,7 @@ def create_mysql_env(config):
 def create_nprobe_conf(config):
     OUT_FILE = os.path.join(BASE_DIR, 'nprobe', 'nprobe.conf')
     logger.info('creating config file for nprobe: %s', OUT_FILE)
-    base_config = '''
--n 127.0.0.1:2055
+    base_config = '''-n 127.0.0.1:2055
 -V 9
 -T "%IPV4_SRC_ADDR %IPV4_DST_ADDR %IN_PKTS %IN_BYTES %OUT_PKTS %OUT_BYTES %FIRST_SWITCHED %LAST_SWITCHED %L4_SRC_PORT %L4_DST_PORT %TCP_FLAGS %PROTOCOL"
 '''
