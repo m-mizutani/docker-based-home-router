@@ -1,0 +1,7 @@
+option:
+  23:
+  - :uint32
+  - :out_bytes
+  24:
+  - :uint32
+  - :out_pkts
