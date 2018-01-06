@@ -4,3 +4,4 @@ config.json
 secret.json
 fluentd/fluent.conf
 kea/kea-config.json
+nprobe/nprobe.conf
