@@ -150,20 +150,6 @@ def create_mysql_env(config):
         ofd.write('MYSQL_DATABASE=dhcpdb\n')
         ofd.write('MYSQL_ROOT_PASSWORD={}\n'.format(config['kea-db']['passwd']))
 
-
-def create_nprobe_conf(config):
-    OUT_FILE = os.path.join(BASE_DIR, 'nprobe', 'nprobe.conf')
-    logger.info('creating config file for nprobe: %s', OUT_FILE)
-    base_config = '''-n 127.0.0.1:2055
--V 9
--T "%IPV4_SRC_ADDR %IPV4_DST_ADDR %IN_PKTS %IN_BYTES %OUT_PKTS %OUT_BYTES %FIRST_SWITCHED %LAST_SWITCHED %L4_SRC_PORT %L4_DST_PORT %TCP_FLAGS %PROTOCOL"
-'''
-    with open(OUT_FILE, 'wt') as ofd:
-        ofd.write('-i {}\n'.format(config['monitor']['interface']))
-        ofd.write(base_config)
-
-
-        
 def create_dns_gazer_env(config):
     OUT_FILE = os.path.join(BASE_DIR, 'dns-gazer.env')
     logger.info('creating env file for dns-gazer: %s', OUT_FILE)
