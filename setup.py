@@ -98,6 +98,7 @@ def create_fluentd_config(config):
   time_slice_format %Y%m%d%H
 
   path {5}
+  buffer_type file
   buffer_path {6}
   time_slice_wait {7}
   buffer_chunk_limit 256m
