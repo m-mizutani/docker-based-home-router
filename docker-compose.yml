@@ -50,10 +50,12 @@ services:
     - 127.0.0.1:2055:2055/udp
     volumes:
     - fluentd-buffer:/var/log/fluentd
-  nprobe:
-    build: ./nprobe    
+  softflowd:
+    build: ./softflowd
     restart: always
     network_mode: host
+    env_file:
+    - softflowd.env
     depends_on:
     - fluentd
     logging:

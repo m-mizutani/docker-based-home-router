@@ -172,6 +172,13 @@ def create_dns_gazer_env(config):
         ofd.write('DEVICE={}\n'.format(config['monitor']['interface']))
         ofd.write('FLUENTD_ADDRESS=127.0.0.1:24224\n')
         
+def create_softflowd_env(config):
+    OUT_FILE = os.path.join(BASE_DIR, 'softflowd.env')
+    logger.info('creating env file for softflowd: %s', OUT_FILE)
+
+    with open(OUT_FILE, 'wt') as ofd:
+        ofd.write('DEVICE={}\n'.format(config['monitor']['interface']))
+        ofd.write('NETFLOW_COLLECTOR=127.0.0.1:2055\n')
 
 def mkpasswd(n=16):
     passwd_chars = string.ascii_uppercase + string.ascii_lowercase + string.digits
@@ -201,7 +208,8 @@ def main():
     create_fluentd_config(config)
     create_kea_config(config)
     create_mysql_env(config)
-    create_nprobe_conf(config)
+
+    create_softflowd_env(config)
     create_dns_gazer_env(config)
 
 
