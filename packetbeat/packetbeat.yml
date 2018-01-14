@@ -1,0 +1,68 @@
+#============================== Network device ================================
+
+packetbeat.interfaces.device: any
+
+#================================== Flows =====================================
+
+packetbeat.flows:
+  timeout: 30s
+  period: 10s
+
+#========================== Transaction protocols =============================
+
+packetbeat.protocols:
+- type: icmp
+  # Enable ICMPv4 and ICMPv6 monitoring. Default: false
+  enabled: true
+
+- type: amqp
+  # Configure the ports where to listen for AMQP traffic. You can disable
+  # the AMQP protocol by commenting out the list of ports.
+  ports: [5672]
+
+- type: cassandra
+  #Cassandra port for traffic monitoring.
+  ports: [9042]
+
+- type: dns
+  # Configure the ports where to listen for DNS traffic. You can disable
+  # the DNS protocol by commenting out the list of ports.
+  ports: [53]
+
+  # include_authorities controls whether or not the dns.authorities field
+  # (authority resource records) is added to messages.
+  include_authorities: true
+
+  # include_additionals controls whether or not the dns.additionals field
+  # (additional resource records) is added to messages.
+  include_additionals: true
+
+- type: http
+  # Configure the ports where to listen for HTTP traffic. You can disable
+  # the HTTP protocol by commenting out the list of ports.
+  ports: [80, 8080, 8000, 5000, 8002]
+
+- type: tls
+  # Configure the ports where to listen for TLS traffic. You can disable
+  # the TLS protocol by commenting out the list of ports.
+  ports: [443]
+
+
+#================================ Outputs =====================================
+
+#----------------------------- Logstash output --------------------------------
+output.logstash:
+  # The Logstash hosts
+  hosts: ["localhost:5044"]
+
+#================================ Logging =====================================
+
+# Sets log level. The default log level is info.
+# Available log levels are: critical, error, warning, info, debug
+#logging.level: debug
+
+# At debug level, you can selectively enable logging only for some components.
+# To enable all selectors use ["*"]. Examples of other selectors are "beat",
+# "publish", "service".
+#logging.selectors: ["*"]
+                                                                                                                

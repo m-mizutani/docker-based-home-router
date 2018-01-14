@@ -85,6 +85,12 @@ def create_fluentd_config(config):
             'time_slice_wait': '10m',
             'buffer_path': '/var/log/fluentd/buffer_netflow'
         },
+        {
+            'tag': 'beats.event',
+            'path': 'beats',
+            'time_slice_wait': '10m',
+            'buffer_path': '/var/log/fluentd/buffer_beats'
+        },
     ]
     
     s3_template = '''
