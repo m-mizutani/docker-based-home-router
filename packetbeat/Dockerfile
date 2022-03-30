@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.15.3
 
 RUN apk --no-cache add curl libpcap libc6-compat
 RUN mkdir -p /opt/ \
