@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:xenial-20210416
 LABEL maintainer="mizutani@sfc.wide.ad.jp"
 
 RUN apt-get update && apt-get install -y kea-dhcp4-server kea-admin mysql-client
